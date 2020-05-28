@@ -1,0 +1,187 @@
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+<div id="app-my">
+
+    <div class="content-wrapper">
+        <div class="nav-wrapper">
+            <!--<type-item v-for="item in typeList"
+                       v-bind:type="item"
+                       v-bind:key="item.id"
+                       @click="showVue(item)">
+            </type-item>-->
+            <button class="nav-item" v-for="item in typeList" :key="item.id" @click="showExact(item)">
+                <span>{{ item.name }}</span>
+            </button>
+        </div>
+
+        <div class="card-wrapper">
+            <card-item
+                    v-for="item in cardList"
+                    v-bind:card="item"
+            ></card-item>
+        </div>
+    </div>
+</div>
+
+<script>
+    Vue.component('card-item', {
+        props: ['card'],
+        template: '<div class="card" v-if="card.seen">\n' +
+            '                <div class="card-overlay"></div>\n' +
+            '                <div class="card-body">\n' +
+            '                    <img class="card-img" v-bind:src="card.img" alt="">\n' +
+            '                    <img class="framework-logo" v-bind:src="\'/img/\' + card.type + \'_logo.svg\'" alt="">\n' +
+            '                    <h4 class="card-title bold">{{ card.title }}</h4>\n' +
+            '                    <h6 class="card-subtitle">{{ card.subtitle}}</h6>\n' +
+            '                </div>\n' +
+            '            </div>'
+    });
+
+    Vue.component('type-item', {
+        props: ['type'],
+        template: '<button class="nav-item">{{ type.name }}</button>'
+    });
+
+    var appMy = new Vue({
+        el: '#app-my',
+        data: {
+            cardList: [
+                { id: 1, seen: true, type: 'Vue', title: 'Interactive Paycard', subtitle: 'A fantastic credit card form with smooth micro-interactions', img: '/img/1_vue.gif' },
+                { id: 2, seen: true, type: 'Vue', title: ' Formulate ', subtitle: ' The easiest way to build forms with Vue ', img: '/img/2_vue.gif' },
+                { id: 3, seen: true, type: 'React', title: ' Movie Database ', subtitle: ' Using typeahead.js, bloodhound, Bootstrap ', img: '/img/1_react.gif' },
+            ],
+
+            typeList : [
+                { id: 1, name: 'All' },
+                { id: 2, name: 'Vue' },
+                { id: 3, name: 'React'}
+            ]
+        },
+        methods: {
+            showExact(type) {
+                let i = 0;
+                for (i=0; i<this.cardList.length; i++) {
+                    if (type.name == 'All') {
+                        this.cardList[i].seen = true;
+                    } else if (this.cardList[i].type != type.name) {
+                        this.cardList[i].seen = false;
+                    } else {
+                        this.cardList[i].seen = true;
+                    }
+                }
+            }
+        }
+    });
+</script>
+
+
+<style>
+    .nav-wrapper {
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .nav-item {
+        color: #0062ff;
+        font-weight: bold;
+        padding: 6px 12px;
+        border-radius: 6px;
+        background: #fff;
+        border: 2px solid #b9d3fd;
+        margin: 5px;
+    }
+
+    .nav-item:hover {
+        background-color: #0062ff;
+        border: 2px solid #0062ff;
+        color: #fff;
+        cursor: pointer;
+    }
+
+    .card-btn_box {
+        display: none;
+    }
+
+    .card {
+        position: relative;
+        background: transparent;
+        background-color: transparent;
+        -webkit-transition: all .25s cubic-bezier(.374,.019,.035,1.861);
+        transition: all .25s cubic-bezier(.374,.019,.035,1.861);
+        background-color: #fff;
+        border-radius: 4px;
+        box-shadow: 0 2px 2px 1px rgba(0,0,0,.1);
+        width: 100%;
+        display: block;
+    }
+
+    .card:hover {
+        transform: scale(1.03);
+    }
+
+    .card .card-img {
+        -o-object-fit: cover;
+        object-fit: cover;
+        max-height: 200px;
+        width: 100%;
+        min-height: 300px;
+        border-radius: 3px;
+        margin-bottom: 10px;
+    }
+
+    .card-wrapper {
+        margin: 0 auto;
+        display: grid;
+        padding: 30px 28px;
+        grid-template-columns: repeat(auto-fill,minmax(350px,1fr));
+        grid-gap: 30px;
+        -webkit-box-align: stretch;
+        align-items: stretch;
+    }
+
+    .card .card-body {
+        padding: 10px;
+    }
+
+    .framework-logo {
+        border-radius: 0 !important;
+        float: right;
+        margin-right: 10px;
+        width: 30px;
+    }
+
+    .card-title {
+        font-size: 17px;
+        width: 100%;
+    }
+
+    .bold {
+        font-weight: 700 !important;
+    }
+
+    .card-subtitle {
+        font-size: 14px;
+        width: 100%;
+    }
+
+    .card-overlay {
+        transition: all .16s ease-in-out;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        top: 0;
+        border-radius: 4px;
+    }
+
+    .card-overlay:hover {
+        background-color: rgba(61,213,153,.3);
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        font-weight: 500;
+        margin-top: .5rem;
+        margin-bottom: .5rem;
+    }
+</style>
